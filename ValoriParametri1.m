@@ -19,6 +19,14 @@ A = [0 0 1 0;0 0 0 1;-k/m1 k/m1 -c/m1 c/m1;k/m2 -k/m2 c/m2 -c/m2];
 B = [0;0;1/m1;0];
 C = [1 0 0 0];
 D = 0;
-value = 2;
+value = 1;
 
-[Ac,Bc,Cc,Dc] = CreazioneCompensatore1(A,B,C,value);
+[As,Bs,Cs,Ds] = CreazioneCompensatore1(A,B,C,value);
+
+%funzione che calcola il numeratore e denominatore della funzione di
+%trasferimento dell'impianto P(s)
+[Np,Dp] = ss2tf(A,B,C,D);
+
+%funzione che calcola il numeratore e denominatore della funzione di
+%trasferimento del compensatore C(s)
+[Nc,Dc] = ss2tf(As,Bs,Cs,Ds);

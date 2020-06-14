@@ -1,7 +1,8 @@
-function [Ac,Bc,Cc,Dc] = CreazioneCompensatore1(A,B,C,value)
+function [As,Bs,Cs,Ds] = CreazioneCompensatore1(A,B,C,value)
     %E' possibile progettare un compensatore che stabilizza asintoticamente
     %il sistema a ciclio chiuso mediante retroazione dinamica dall'uscita
     %se e solo se il sistema S è STABILIZZABILE e RILEVABILE.
+    syms s;
     dim_A = size(A);
     n = dim_A(1);
     I = eye(n);
@@ -70,7 +71,7 @@ function [Ac,Bc,Cc,Dc] = CreazioneCompensatore1(A,B,C,value)
     
     %progettazione dello stabilizzatore Cs(s)
     F = CalcoloMatriceF(A,B,value,rag);
-    V = CalcoloMatriceV(A,C,value+2,oss);
+    V = CalcoloMatriceV(A,C,value+1,oss);
     
     %calcolo le matrici As,Bs,Cs,Ds per lo stabilizzatore
     As = A-(V*C)+(B*F);
@@ -79,28 +80,27 @@ function [Ac,Bc,Cc,Dc] = CreazioneCompensatore1(A,B,C,value)
     Ds = 0;
     
     %siccome Cm(s) = 1 allora le matrici Am,Bm,Cm,Dm valgono come segue:
-    Am = 1;
-    Bm = 1;
-    Cm = 1;
-    Dm = 0;
+    %Am = 1;
+    %Bm = 1;
+    %Cm = 1;
+    %Dm = 0;
     
     %la rappresentazione nello spazio di stato per C(s) che è la cascata di
     %Cs(s) e Cm(s) è definita dalle seguenti matrici:
-    dim_As = size(As);
-    n = dim_As(1);
-    z = zeros(n,1);
-    mat = Bm*Cs;
+    %dim_As = size(As);
+    %n = dim_As(1);
+    %z = zeros(n,1);
+    %mat = Bm*Cs;
     
-    Ac = [As z;mat Am];
+    %Ac = [As z;mat Am];
     
-    mat = Bm*Ds;
+    %mat = Bm*Ds;
     
-    Bc = [Bs;mat];
+    %Bc = [Bs;mat];
     
-    mat = Dm*Cs;
+    %mat = Dm*Cs;
     
-    Cc = [mat Cm];
+    %Cc = [mat Cm];
     
-    Dc = Dm*Ds;
-    
+    %Dc = Dm*Ds;
 end

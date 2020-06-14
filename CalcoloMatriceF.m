@@ -27,7 +27,7 @@ function F = CalcoloMatriceF(A,B,value,rag)
         tau = vet*(inv(P));
         
         %calcolo dei nuovi autovalori della matrice A+BF
-        autoval_A = eig(A);
+        autoval_A = eig(A)
         newAutoval = [];
         
         for i = 1:n
@@ -36,6 +36,7 @@ function F = CalcoloMatriceF(A,B,value,rag)
             val = val-value;
             newAutoval = vertcat(newAutoval,val);
         end
+        newAutoval
         
         %calcolo del polinomio caratteristico desiderato Pdes
         Pdes = 1;
@@ -55,7 +56,7 @@ function F = CalcoloMatriceF(A,B,value,rag)
             j = j+1;
         end
         
-        F = -(tau*mat);
+        F = -(tau*mat)
         
     else
         %CASO sistema non raggiungibile ma stabilizzabile poichè gli

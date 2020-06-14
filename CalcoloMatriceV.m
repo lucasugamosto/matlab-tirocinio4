@@ -33,7 +33,7 @@ function V = CalcoloMatriceV(A,C,value,oss)
         tau = vet*(inv(Pd));
         
         %calcolo dei nuovi autovalori per la matrice Ad+BdFd = A-VC
-        autoval_Ad = eig(Ad);
+        autoval_Ad = eig(Ad)
         newAutoval = [];
         
         for i = 1:n
@@ -42,6 +42,7 @@ function V = CalcoloMatriceV(A,C,value,oss)
             val = val-value;
             newAutoval = vertcat(newAutoval,val);
         end
+        newAutoval
         
         %calcolo del polinomio caratteristico desiderato Pdes
         Pdes = 1;
@@ -61,10 +62,10 @@ function V = CalcoloMatriceV(A,C,value,oss)
             j = j+1;
         end
         
-        Fd = -(tau*mat);
+        Fd = -(tau*mat)
         
         %calcolo della matrice V
-        V = -(Fd');
+        V = -(Fd')
     
     else
         %CASO sistema non osservabile ma rilevabile, allora studio degli
