@@ -33,15 +33,25 @@ function V = CalcoloMatriceV(A,C,value,oss)
         tau = vet*(inv(Pd));
         
         %calcolo dei nuovi autovalori per la matrice Ad+BdFd = A-VC
-        autoval_Ad = eig(Ad)
+        autoval_Ad = eig(Ad);
         newAutoval = [];
         
         for i = 1:n
-            val = real(autoval_Ad(i));
-            val = round(val);
-            val = val-value;
-            newAutoval = vertcat(newAutoval,val);
+            if real(autoval_Ad(i)) >= 0
+
+                val = real(autoval_Ad(i));
+                val = round(val);
+                
+                while val >= 0
+                    val = val-value;
+                end
+                  
+                newAutoval = vertcat(newAutoval,val);
+            else
+                newAutoval = vertcat(newAutoval,autoval_Ad(i));
+            end
         end
+        fprintf("i nuovi autovalori per la matrice A-VC sono:\n");
         newAutoval
         
         %calcolo del polinomio caratteristico desiderato Pdes
@@ -57,15 +67,15 @@ function V = CalcoloMatriceV(A,C,value,oss)
         mat = zeros(n);
         j = 0;
         for i = n+1:-1:1
-            val = vet(i)*(A^j);
+            val = vet(i)*(Ad^j);
             mat = mat+val;
             j = j+1;
         end
         
-        Fd = -(tau*mat)
+        Fd = -(tau*mat);
         
         %calcolo della matrice V
-        V = -(Fd')
+        V = -(Fd');
     
     else
         %CASO sistema non osservabile ma rilevabile, allora studio degli
@@ -133,11 +143,22 @@ function V = CalcoloMatriceV(A,C,value,oss)
         newAutoval = [];
         
         for i = 1:nr
-            val = real(autoval_Adr(i));
-            val = round(val);
-            val = val-value;
-            newAutoval = vertcat(newAutoval,val);
+            if real(autoval_Adr(i)) >= 0
+
+                val = real(autoval_Adr(i));
+                val = round(val);
+                
+                while val >= 0
+                    val = val-value;
+                end
+                  
+                newAutoval = vertcat(newAutoval,val);
+            else
+                newAutoval = vertcat(newAutoval,autoval_Adr(i));
+            end
         end
+        fprintf("i nuovi autovalori per la matrice Adr+BdrFdr sono:\n");
+        newAutoval
         
         %calcolo della matrice di raggiungibilità per il sottositema
         %raggiungibile del sistema duale Sd

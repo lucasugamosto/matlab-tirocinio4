@@ -27,15 +27,25 @@ function F = CalcoloMatriceF(A,B,value,rag)
         tau = vet*(inv(P));
         
         %calcolo dei nuovi autovalori della matrice A+BF
-        autoval_A = eig(A)
+        autoval_A = eig(A);
         newAutoval = [];
         
         for i = 1:n
-            val = real(autoval_A(i));
-            val = round(val);
-            val = val-value;
-            newAutoval = vertcat(newAutoval,val);
+            if real(autoval_A(i)) >= 0
+
+                val = real(autoval_A(i));
+                val = round(val);
+                
+                while val >= 0
+                    val = val-value;
+                end
+                  
+                newAutoval = vertcat(newAutoval,val);
+            else
+                newAutoval = vertcat(newAutoval,autoval_A(i));
+            end
         end
+        fprintf("i nuovi autovalori per la matrice A+BF sono:\n");
         newAutoval
         
         %calcolo del polinomio caratteristico desiderato Pdes
@@ -56,7 +66,7 @@ function F = CalcoloMatriceF(A,B,value,rag)
             j = j+1;
         end
         
-        F = -(tau*mat)
+        F = -(tau*mat);
         
     else
         %CASO sistema non raggiungibile ma stabilizzabile poichè gli
@@ -121,11 +131,22 @@ function F = CalcoloMatriceF(A,B,value,rag)
         newAutoval = [];
         
         for i = 1:nr
-            val = real(autoval_Arr(i));
-            val = round(val);
-            val = val-value;
-            newAutoval = vertcat(newAutoval,val);
+            if real(autoval_Arr(i)) >= 0
+
+                val = real(autoval_Arr(i));
+                val = round(val);
+                
+                while val >= 0
+                    val = val-value;
+                end
+                  
+                newAutoval = vertcat(newAutoval,val);
+            else
+                newAutoval = vertcat(newAutoval,autoval_Arr(i));
+            end
         end
+        fprintf("i nuovi autovalori per la matrice Arr+BrFr sono:\n");
+        newAutoval
         
         %calcolo della matrice di raggiungibilità per il sottosistema
         %raggiungibile

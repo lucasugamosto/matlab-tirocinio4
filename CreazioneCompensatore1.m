@@ -1,4 +1,4 @@
-function [As,Bs,Cs,Ds] = CreazioneCompensatore1(A,B,C,value)
+function CreazioneCompensatore1(A,B,C,value)
     %E' possibile progettare un compensatore che stabilizza asintoticamente
     %il sistema a ciclio chiuso mediante retroazione dinamica dall'uscita
     %se e solo se il sistema S è STABILIZZABILE e RILEVABILE.
@@ -7,7 +7,7 @@ function [As,Bs,Cs,Ds] = CreazioneCompensatore1(A,B,C,value)
     n = dim_A(1);
     I = eye(n);
     
-    %controllo stabilizzabilità del sistema S
+    %CONTROLLO STABILIZZABILITA' DEL SISTEMA S
     P = [];
     
     for i = 0:n-1
@@ -15,7 +15,7 @@ function [As,Bs,Cs,Ds] = CreazioneCompensatore1(A,B,C,value)
     end
     
     if rank(P) == n
-        fprintf("il sistema è raggiungibile\n");
+        fprintf("il sistema è raggiungibile e quindi stabilizzabile\n")
         rag = 1;
     else
         rag = 0;
@@ -32,10 +32,13 @@ function [As,Bs,Cs,Ds] = CreazioneCompensatore1(A,B,C,value)
                 end
             end
         end
-        fprintf("il sistema è stabilizzabile\n");
+        fprintf("il sistema non è raggiungibile ma è stabilizzabile\n");
+        %quindi tutti e soli gli autovalori che fanno parte del
+        %sottosistema irraggiungibile sono quelli con parte reale minore di
+        %0
     end
     
-    %controllo rilevabilità del sistema S
+    %CONTROLLO RILEVABILITA' DEL SISTEMA S
     Q = [];
     
     for i = 0:n-1
@@ -43,7 +46,7 @@ function [As,Bs,Cs,Ds] = CreazioneCompensatore1(A,B,C,value)
     end
     
     if rank(Q) == n
-        fprintf("il sistema è osservabile\n");
+        fprintf("il sistema è osservabile e quindi rilevabile\n");
         oss = 1;
     else
         oss = 0;
@@ -60,47 +63,36 @@ function [As,Bs,Cs,Ds] = CreazioneCompensatore1(A,B,C,value)
                 end
             end
         end
-        fprintf("il sistema è rilevabile\n");
+        fprintf("il sistema non è osservabile ma è rilevabile\n");
+        %quindi tutti e soli gli autovalori che fanno parte del
+        %sottosistema inosservabile sono quelli con parte reale minore di
+        %0
     end
-    
-    %progettazione di Cm(s)
+        
+    %PROGETTAZIONE DI Cm(s)
     %In questo caso l'inseguimento di traiettoria è del tipo r(t) = M1*t+M0
     %quindi r(s) ha polo 0 con molteplicità 2. 
     %La funzione di trasferimento P(s) del sistema ha già quel polo con la
     %stessa molteplicità, quindi Cm(s) = 1.
     
-    %progettazione dello stabilizzatore Cs(s)
+    %Siccome Cm(s) = 1 allora le matrici Am,Bm,Cm,Dm sono così definite:
+    Am = 0;
+    Bm = 0;
+    Cm = 0;
+    Dm = 1;
+    
+    %PROGETTAZIONE DI Cs(s)
+    fprintf("gli autovalori della matrice A sono:\n");
+    autovalori_A = eig(A)
+    
     F = CalcoloMatriceF(A,B,value,rag);
     V = CalcoloMatriceV(A,C,value+1,oss);
     
-    %calcolo le matrici As,Bs,Cs,Ds per lo stabilizzatore
+    %le matrici As,Bs,Cs,Ds sono di seguito definite:
     As = A-(V*C)+(B*F);
     Bs = V;
     Cs = -F;
     Ds = 0;
     
-    %siccome Cm(s) = 1 allora le matrici Am,Bm,Cm,Dm valgono come segue:
-    %Am = 1;
-    %Bm = 1;
-    %Cm = 1;
-    %Dm = 0;
     
-    %la rappresentazione nello spazio di stato per C(s) che è la cascata di
-    %Cs(s) e Cm(s) è definita dalle seguenti matrici:
-    %dim_As = size(As);
-    %n = dim_As(1);
-    %z = zeros(n,1);
-    %mat = Bm*Cs;
-    
-    %Ac = [As z;mat Am];
-    
-    %mat = Bm*Ds;
-    
-    %Bc = [Bs;mat];
-    
-    %mat = Dm*Cs;
-    
-    %Cc = [mat Cm];
-    
-    %Dc = Dm*Ds;
 end
