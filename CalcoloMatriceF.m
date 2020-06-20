@@ -36,7 +36,7 @@ function F = CalcoloMatriceF(A,B,value,rag)
                 val = real(autoval_A(i));
                 val = round(val);
                 
-                while val >= 0
+                while val > -1
                     val = val-value;
                 end
                   
@@ -136,7 +136,7 @@ function F = CalcoloMatriceF(A,B,value,rag)
                 val = real(autoval_Arr(i));
                 val = round(val);
                 
-                while val >= 0
+                while val > -1
                     val = val-value;
                 end
                   

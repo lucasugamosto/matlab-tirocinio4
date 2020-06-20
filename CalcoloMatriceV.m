@@ -37,17 +37,20 @@ function V = CalcoloMatriceV(A,C,value,oss)
         newAutoval = [];
         
         for i = 1:n
-            if real(autoval_Ad(i)) >= 0
+            value1 = round(autoval_Ad(i));
+                
+            if real(value1) >= 0
 
                 val = real(autoval_Ad(i));
                 val = round(val);
                 
-                while val >= 0
+                while val > -1
                     val = val-value;
                 end
-                  
+                
                 newAutoval = vertcat(newAutoval,val);
             else
+                
                 newAutoval = vertcat(newAutoval,autoval_Ad(i));
             end
         end
@@ -148,7 +151,7 @@ function V = CalcoloMatriceV(A,C,value,oss)
                 val = real(autoval_Adr(i));
                 val = round(val);
                 
-                while val >= 0
+                while val > -1
                     val = val-value;
                 end
                   
