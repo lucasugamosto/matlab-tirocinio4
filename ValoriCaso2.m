@@ -31,3 +31,5 @@ I = eye(n);
 
 P = D + C*(inv(s*I-A))*B;
 pretty(P)
+
+[Ncom,Dcom] = CreazioneCompensatore1(A,B,C,1);

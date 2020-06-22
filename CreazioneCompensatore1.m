@@ -1,4 +1,4 @@
-function CreazioneCompensatore1(A,B,C,value)
+function [Ncom,Dcom] = CreazioneCompensatore1(A,B,C,value)
     %E' possibile progettare un compensatore che stabilizza asintoticamente
     %il sistema a ciclio chiuso mediante retroazione dinamica dall'uscita
     %se e solo se il sistema S è STABILIZZABILE e RILEVABILE.
@@ -94,5 +94,5 @@ function CreazioneCompensatore1(A,B,C,value)
     Cs = -F;
     Ds = 0;
     
-    
+    [Ncom,Dcom] = ss2tf(As,Bs,Cs,Ds);
 end
