@@ -3,12 +3,12 @@
 %altrimenti i blocchi contenenti le matrici o altro non hanno nessun valore
 %definito
 
-%caso2 : quaterna di valori m1,m2,k,c tali che gli autovalori della matrice
-%A diversi da 0 siano complessi coniugati
-m1 = 2;
-m2 = 2;
-k = 10;
-c = 6;
+%caso1 : quaterna di valori m1,m2,k,c tali che gli autovalori della matrice
+%A diversi da 0 siano immaginari puri (+-wj)
+m1 = 1;
+m2 = 1;
+k = 2;
+c = 0;
 
 x = [0;10;0;0];
 %x è il vettore contenente lo stato iniziale del sistema, in esso:

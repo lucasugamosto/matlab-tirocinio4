@@ -31,7 +31,9 @@ function F = CalcoloMatriceF(A,B,value,rag)
         newAutoval = [];
         
         for i = 1:n
-            if real(autoval_A(i)) >= 0
+            value1 = round(autoval_A(i));
+                
+            if real(value1) >= 0
 
                 val = real(autoval_A(i));
                 val = round(val);
@@ -39,9 +41,10 @@ function F = CalcoloMatriceF(A,B,value,rag)
                 while val > -1
                     val = val-value;
                 end
-                  
+                
                 newAutoval = vertcat(newAutoval,val);
             else
+                
                 newAutoval = vertcat(newAutoval,autoval_A(i));
             end
         end
