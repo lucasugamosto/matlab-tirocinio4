@@ -5,7 +5,6 @@
 
 %caso2 : quaterna di valori m1,m2,k,c tali che gli autovalori della matrice
 %A diversi da 0 siano complessi coniugati
-
 m1 = 2;
 m2 = 2;
 k = 10;
@@ -23,3 +22,12 @@ B = [0;0;1/m1;0];
 C = [1 0 0 0];
 D = 0;
 
+autovalori_A = eig(A);
+
+syms s
+dim_A = size(A);
+n = dim_A(1);
+I = eye(n);
+
+P = D + C*(inv(s*I-A))*B;
+pretty(P)
