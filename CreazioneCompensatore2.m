@@ -1,7 +1,9 @@
-function [Ncom,Dcom] = CreazioneCompensatore1(A,B,C,value)
+function [Ncom,Dcom] = CreazioneCompensatore2(A,B,C,D,value,OM)
     %E' possibile progettare un compensatore che stabilizza asintoticamente
     %il sistema a ciclio chiuso mediante retroazione dinamica dall'uscita
     %se e solo se il sistema S è STABILIZZABILE e RILEVABILE.
+    
+    %progettazione per il caso numerico di due autovalori immaginari puri
     syms s;
     dim_A = size(A);
     n = dim_A(1);
@@ -68,25 +70,56 @@ function [Ncom,Dcom] = CreazioneCompensatore1(A,B,C,value)
         %sottosistema inosservabile sono quelli con parte reale minore di
         %0
     end
-        
+    
     %PROGETTAZIONE DI Cm(s)
-    %In questo caso l'inseguimento di traiettoria è del tipo r(t) = M1*t+M0
-    %quindi r(s) ha polo 0 con molteplicità 2. 
-    %La funzione di trasferimento P(s) del sistema ha già quel polo con la
-    %stessa molteplicità, quindi Cm(s) = 1.
+    %In questo caso l'inseguimento di traiettorie è del tipo
+    %r(t) = M*sin(OM*t + f);
+    
+    %Gli autovalori di A sono: 0,0,2j,-2j => scelgo OM != 2;
+    
+    %Allora definisco Cm(s) = 1/fi(s) con fi(s) = (s^2 + OM^2).
+    if OM == 2
+        fprintf("il valore di OMEGA scelto è errato, riprovare\n");
+        return
+    else
+        Am = [-1 0 -(OM^2);1 0 0;0 1 0];
+        Bm = [1;0;0];
+        Cm = [0 0 1];
+        Dm = 0;
+    end
+    
+    %ora si trova una rappresentazione dello spazio di stato per la serie
+    %di Cm(s) e P(s)
+    dim_Am = size(Am);
+    mat = zeros(dim_Am(1),dim_A(2));
+    
+    Aseg = [Am mat;B*Cm A];
+    Bseg = [Bm;B*Dm];
+    Cseg = [D*Cm C];
+    Dseg = [D*Dm];
     
     %PROGETTAZIONE DI Cs(s)
-    fprintf("gli autovalori della matrice A sono:\n");
-    autovalori_A = eig(A)
+    %ora si progetta lo stabilizzatore per il sistema (Aseg,Bseg,Cseg,Dseg)
+    fprintf("gli autovalori della matrice Aseg sono:\n");
+    autovalori_Aseg = eig(Aseg);
     
-    F = CalcoloMatriceF(A,B,value,rag);
-    V = CalcoloMatriceV(A,C,value+1,oss);
+    F = CalcoloMatriceF(Aseg,Bseg,value,rag);
+    V = CalcoloMatriceV(Aseg,Cseg,value+1,oss);
     
-    %le matrici As,Bs,Cs,Ds sono di seguito definite:
-    As = A-(V*C)+(B*F);
+    As = Aseg - (V*Cseg) + (Bseg*F);
     Bs = V;
     Cs = -F;
     Ds = 0;
     
-    [Ncom,Dcom] = ss2tf(As,Bs,Cs,Ds);
+    %ora si scrive la rappresentazione nello spazio di stato per C(s) che è
+    %la serie di Cs(s) e Cm(s)
+    dim_As = size(As);
+    mat = zeros(dim_As(1),dim_Am(2));
+    
+    Ac = [As mat;Bm*Cs Am];
+    Bc = [Bs;Bm*Ds];
+    Cc = [Dm*Cs Cm];
+    Dc = [Dm*Ds];
+
+    [Ncom,Dcom] = ss2tf(Ac,Bc,Cc,Dc);
 end

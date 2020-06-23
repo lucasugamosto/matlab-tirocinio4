@@ -29,7 +29,7 @@ dim_A = size(A);
 n = dim_A(1);
 I = eye(n);
 
-%P = D + C*(inv(s*I-A))*B;
+[Ncom1,Dcom1] = CreazioneCompensatore1(A,B,C,1);
+[Ncom2,Dcom2] = CreazioneCompensatore2(A,B,C,D,1,3);
 
-[Ncom,Dcom] = CreazioneCompensatore1(A,B,C,1);
 [Nsys,Dsys] = ss2tf(A,B,C,D);
