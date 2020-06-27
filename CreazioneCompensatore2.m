@@ -1,4 +1,4 @@
-function [Ncom,Dcom] = CreazioneCompensatore2(A,B,C,D,value,OM)
+function [Aseg,Ncom,Dcom] = CreazioneCompensatore2(A,B,C,D,value,OM)
     %E' possibile progettare un compensatore che stabilizza asintoticamente
     %il sistema a ciclio chiuso mediante retroazione dinamica dall'uscita
     %se e solo se il sistema S è STABILIZZABILE e RILEVABILE.
@@ -17,7 +17,7 @@ function [Ncom,Dcom] = CreazioneCompensatore2(A,B,C,D,value,OM)
     end
     
     if rank(P) == n
-        fprintf("il sistema è raggiungibile e quindi stabilizzabile\n")
+        %fprintf("il sistema è raggiungibile e quindi stabilizzabile\n")
         rag = 1;
     else
         rag = 0;
@@ -48,7 +48,7 @@ function [Ncom,Dcom] = CreazioneCompensatore2(A,B,C,D,value,OM)
     end
     
     if rank(Q) == n
-        fprintf("il sistema è osservabile e quindi rilevabile\n");
+        %fprintf("il sistema è osservabile e quindi rilevabile\n");
         oss = 1;
     else
         oss = 0;
@@ -75,7 +75,9 @@ function [Ncom,Dcom] = CreazioneCompensatore2(A,B,C,D,value,OM)
     %In questo caso l'inseguimento di traiettorie è del tipo
     %r(t) = M*sin(OM*t + f);
     
-    %Gli autovalori di A sono: 0,0,2j,-2j => scelgo OM != 2;
+    %Gli autovalori di A sono: 0,0,2j,-2j => scelgo OM != 2 poichè la
+    %pulsazione OMEGA deve essere diversa da quella degli autovalori, in
+    %modo da non creare cancellazioni illecite
     
     %Allora definisco Cm(s) = 1/fi(s) con fi(s) = (s^2 + OM^2).
     if OM == 2
@@ -100,8 +102,6 @@ function [Ncom,Dcom] = CreazioneCompensatore2(A,B,C,D,value,OM)
     
     %PROGETTAZIONE DI Cs(s)
     %ora si progetta lo stabilizzatore per il sistema (Aseg,Bseg,Cseg,Dseg)
-    fprintf("gli autovalori della matrice Aseg sono:\n");
-    autovalori_Aseg = eig(Aseg);
     
     F = CalcoloMatriceF(Aseg,Bseg,value,rag);
     V = CalcoloMatriceV(Aseg,Cseg,value+1,oss);

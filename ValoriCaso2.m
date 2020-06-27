@@ -2,6 +2,7 @@
 %operazione deve essere eseguita prima di simulare il sistema in simulink
 %altrimenti i blocchi contenenti le matrici o altro non hanno nessun valore
 %definito
+fprintf("CASO: 2 autovalori complessi coniugati\n");
 
 %caso2 : quaterna di valori m1,m2,k,c tali che gli autovalori della matrice
 %A diversi da 0 siano complessi coniugati
@@ -22,14 +23,13 @@ B = [0;0;1/m1;0];
 C = [1 0 0 0];
 D = 0;
 
-autovalori_A = eig(A);
+fprintf("gli autovalori della matrice A sono:\n");
+autovalori_A = eig(A)
 
-syms s
-dim_A = size(A);
-n = dim_A(1);
-I = eye(n);
-
-%P = D + C*(inv(s*I-A))*B;
+fprintf("\nnumeratore e denominatore della f.d.t del sistema:\n");
+[Nsys,Dsys] = ss2tf(A,B,C,D)
 
 [Ncom,Dcom] = CreazioneCompensatore1(A,B,C,1);
-[Nsys,Dsys] = ss2tf(A,B,C,D);
+fprintf("\nnumeratore e denominatore della f.d.t del compensatore:\n");
+Ncom
+Dcom

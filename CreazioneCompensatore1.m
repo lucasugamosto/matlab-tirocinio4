@@ -15,7 +15,7 @@ function [Ncom,Dcom] = CreazioneCompensatore1(A,B,C,value)
     end
     
     if rank(P) == n
-        fprintf("il sistema è raggiungibile e quindi stabilizzabile\n")
+        %fprintf("il sistema è raggiungibile e quindi stabilizzabile\n")
         rag = 1;
     else
         rag = 0;
@@ -46,7 +46,7 @@ function [Ncom,Dcom] = CreazioneCompensatore1(A,B,C,value)
     end
     
     if rank(Q) == n
-        fprintf("il sistema è osservabile e quindi rilevabile\n");
+        %fprintf("il sistema è osservabile e quindi rilevabile\n");
         oss = 1;
     else
         oss = 0;
@@ -76,8 +76,6 @@ function [Ncom,Dcom] = CreazioneCompensatore1(A,B,C,value)
     %stessa molteplicità, quindi Cm(s) = 1.
     
     %PROGETTAZIONE DI Cs(s)
-    fprintf("gli autovalori della matrice A sono:\n");
-    autovalori_A = eig(A)
     
     F = CalcoloMatriceF(A,B,value,rag);
     V = CalcoloMatriceV(A,C,value+1,oss);

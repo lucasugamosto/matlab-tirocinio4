@@ -2,6 +2,7 @@
 %operazione deve essere eseguita prima di simulare il sistema in simulink
 %altrimenti i blocchi contenenti le matrici o altro non hanno nessun valore
 %definito
+fprintf("CASO: 2 autovalori immaginari puri\n");
 
 %caso1 : quaterna di valori m1,m2,k,c tali che gli autovalori della matrice
 %A diversi da 0 siano immaginari puri (+-wj)
@@ -22,14 +23,28 @@ B = [0;0;1/m1;0];
 C = [1 0 0 0];
 D = 0;
 
-autovalori_A = eig(A);
+fprintf("-----------------------------------------------------------\n");
+fprintf("PROGETTAZIONE DEL COMPENSATORE NEL CASO DI UNA TRAIETTORIA\n DEL TIPO r(t) = M1t+M0\n");
 
-syms s
-dim_A = size(A);
-n = dim_A(1);
-I = eye(n);
+fprintf("\ngli autovalori della matrice A sono:\n");
+autovalori_A = eig(A)
+
+fprintf("\nnumeratore e denominatore della f.d.t del sistema:\n");
+[Nsys,Dsys] = ss2tf(A,B,C,D)
 
 [Ncom1,Dcom1] = CreazioneCompensatore1(A,B,C,1);
-[Ncom2,Dcom2] = CreazioneCompensatore2(A,B,C,D,1,3);
+fprintf("\nnumeratore e denominatore della f.d.t del compensatore:\n");
+Ncom1
+Dcom1
 
-[Nsys,Dsys] = ss2tf(A,B,C,D);
+fprintf("-----------------------------------------------------------\n");
+fprintf("PROGETTAZIONE DEL COMPENSATORE NEL CASO DI UNA TRAIETTORIA\n DEL TIPO r(t) = Msin(OMt+fi)\n");
+
+[Aseg,Ncom2,Dcom2] = CreazioneCompensatore2(A,B,C,D,1,3);
+
+fprintf("\ngli autovalori della matrice Aseg sono:\n");
+autovalori_Aseg = eig(Aseg)
+
+fprintf("\nnumeratore e denominatore della f.d.t del compensatore:\n");
+Ncom2
+Dcom2
